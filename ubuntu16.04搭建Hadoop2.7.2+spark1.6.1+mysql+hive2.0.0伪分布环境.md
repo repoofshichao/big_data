@@ -1,6 +1,7 @@
 ## ubuntu16.04搭建Hadoop2.7.2+spark1.6.1+mysql+hive2.0.0伪分布环境
 
 * 准备
+
 hadoop: https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/
 hive:  http://archive.apache.org/dist/hive/hive-2.0.0/
 spark: https://archive.apache.org/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz
