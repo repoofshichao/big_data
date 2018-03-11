@@ -41,7 +41,7 @@ export PATH=/home/jack/hadoop2/bin:/home/jack/hadoop2/sbin:$JAVA_HOME/:$HADOOP_P
 * 安装rsync
 sudo apt-get install rsync
 
-* ssh
+* ssh  
 sudo apt-get install openssh-server  
 cd ~/.ssh/   # 若没有该目录，请先执行一次ssh localhost  
 ssh-keygen -t rsa   # 会有提示，都按回车就可以  
@@ -206,7 +206,7 @@ jps
 15937 Jps  
 15501 ResourceManager  
 
-* 验证：
+* 验证：  
 yarn：http://localhost:8088/  
 hadoop:  http://localhost:50070  
 
@@ -235,18 +235,24 @@ pyspark
 ## Hive2.0.0安装  
 * mysql安装  
 $sudo apt-get install mysql-server  
-登录mysql：$mysql -u root -p  
-建立数据库hive：mysql>create database hive;  
-mysql>show databases;//查看创建；  
+登录mysql：  
+$mysql -u root -p    
+建立数据库hive：  
+mysql>create database hive;    
+查看创建；  
+mysql>show databases;  
 
 这里一定要把hive数据库的字符集修改为latin1，而且一定要在hive初次启动的时候就修改字符集 （否则就等着删除操作的时候死掉吧）  
 mysql>alter database hive character set latin1;  
 
-创建hive用户,并授权：mysql>grant all on hive.* to hive@'%'  identified by 'hive';  
+创建hive用户,并授权：  
+mysql>grant all on hive.* to hive@'%'  identified by 'hive';  
 
-更新：mysql>flush privileges;   
+更新：  
+mysql>flush privileges;   
 
-查询mysql的版本：mysql>select version();  
+查询mysql的版本：  
+mysql>select version();  
 
 下载mysql的JDBC驱动包： http://dev.mysql.com/downloads/connector/j/  
 
@@ -331,21 +337,21 @@ property.hive.log.dir = /home/jack/app/hive-2.0.0/log
 property.hive.log.file = hive.log
 ```
 
-* 初始化数据库
+* 初始化数据库  
 $ schematool -initSchema -dbType mysql -userName=hive -passWord=hive  
 
-* 查看mysql
+* 查看mysql  
 systemctl status mysql //mysql运行中  
 确认mysql的mysql-connector-java-xxx-bin.jar 包放到 hive-2.0.0/lib目录下  
 
-* 启动metastore
+* 启动metastore  
  hive --service metastore > /tmp/hive_metastore.log 2>&1 &
  
-* 启动Hadoop服务：
+* 启动Hadoop服务：  
 $sbin/start-dfs.sh
 $sbin/start-yarn.sh
 
-* 启动hive
+* 启动hive   
 $hive
 
 * 处理报错：  
