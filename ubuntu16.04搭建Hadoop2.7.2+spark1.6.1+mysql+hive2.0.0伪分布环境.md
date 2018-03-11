@@ -2,10 +2,10 @@
 
 * 准备
 
-hadoop: https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/
-hive:  http://archive.apache.org/dist/hive/hive-2.0.0/
-spark: https://archive.apache.org/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz
-scala: https://downloads.lightbend.com/scala/2.10.6/scala-2.10.6.tgz
+hadoop: https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/  
+hive:  http://archive.apache.org/dist/hive/hive-2.0.0/  
+spark: https://archive.apache.org/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz  
+scala: https://downloads.lightbend.com/scala/2.10.6/scala-2.10.6.tgz  
 
 ## hadoop 安装
 
@@ -42,11 +42,11 @@ export PATH=/home/jack/hadoop2/bin:/home/jack/hadoop2/sbin:$JAVA_HOME/:$HADOOP_P
 sudo apt-get install rsync
 
 * ssh
-sudo apt-get install openssh-server
-cd ~/.ssh/   # 若没有该目录，请先执行一次ssh localhost
-ssh-keygen -t rsa   # 会有提示，都按回车就可以
-cat id_rsa.pub >> authorized_keys  # 加入授权
-使用ssh localhost试试能否直接登录
+sudo apt-get install openssh-server  
+cd ~/.ssh/   # 若没有该目录，请先执行一次ssh localhost  
+ssh-keygen -t rsa   # 会有提示，都按回车就可以  
+cat id_rsa.pub >> authorized_keys  # 加入授权  
+使用ssh localhost试试能否直接登录  
 
 * /etc/hosts
 ```
@@ -178,10 +178,10 @@ source .bashrc
 start-dfs.sh
 jps 
 ```
-输出：
-14242 Jps
-14106 SecondaryNameNode
-13922 DataNode------------------(无namenode)
+输出：  
+14242 Jps  
+14106 SecondaryNameNode  
+13922 DataNode------------------(无namenode)  
 
 ```
 hdfs namenode -format
@@ -189,26 +189,26 @@ stop-dfs.sh
 start-dfs.sh 
 jps 
 ```
-输出：
-14919 NameNode-----------------------（namenode）
-15407 Jps
-15271 SecondaryNameNode
-15073 DataNode
+输出：  
+14919 NameNode-----------------------（namenode）  
+15407 Jps  
+15271 SecondaryNameNode  
+15073 DataNode  
 ```
 start-yarn.sh
 jps 
 ```
-输出：
-15625 NodeManager
-14919 NameNode
-15271 SecondaryNameNode
-15073 DataNode
-15937 Jps
-15501 ResourceManager
+输出：  
+15625 NodeManager  
+14919 NameNode  
+15271 SecondaryNameNode  
+15073 DataNode  
+15937 Jps  
+15501 ResourceManager  
 
 * 验证：
-yarn：http://localhost:8088/
-hadoop:  http://localhost:50070
+yarn：http://localhost:8088/  
+hadoop:  http://localhost:50070  
 
 ## spark安装
 * 配置Spark环境变量
@@ -232,31 +232,31 @@ export HADOOP_CONF_DIR=/home/jack/hadoop2/etc/hadoop
 * 测试
 pyspark
 
-## Hive2.0.0安装
-* mysql安装
-$sudo apt-get install mysql-server
-登录mysql：$mysql -u root -p
-建立数据库hive：mysql>create database hive;
-mysql>show databases;//查看创建；
+## Hive2.0.0安装  
+* mysql安装  
+$sudo apt-get install mysql-server  
+登录mysql：$mysql -u root -p  
+建立数据库hive：mysql>create database hive;  
+mysql>show databases;//查看创建；  
 
-这里一定要把hive数据库的字符集修改为latin1，而且一定要在hive初次启动的时候就修改字符集 （否则就等着删除操作的时候死掉吧）
-mysql>alter database hive character set latin1;
+这里一定要把hive数据库的字符集修改为latin1，而且一定要在hive初次启动的时候就修改字符集 （否则就等着删除操作的时候死掉吧）  
+mysql>alter database hive character set latin1;  
 
-创建hive用户,并授权：mysql>grant all on hive.* to hive@'%'  identified by 'hive';
+创建hive用户,并授权：mysql>grant all on hive.* to hive@'%'  identified by 'hive';  
 
-更新：mysql>flush privileges; 
+更新：mysql>flush privileges;   
 
-查询mysql的版本：mysql>select version();
+查询mysql的版本：mysql>select version();  
 
-下载mysql的JDBC驱动包： http://dev.mysql.com/downloads/connector/j/
+下载mysql的JDBC驱动包： http://dev.mysql.com/downloads/connector/j/  
 
-下载mysql-connector-java-xxx.tar.gz ，复制msyql的JDBC驱动包到Hive的lib目录下。
+下载mysql-connector-java-xxx.tar.gz ，复制msyql的JDBC驱动包到Hive的lib目录下。  
 
 ## Hive安装
 * 环境配置
-见.bashrc
+见.bashrc  
 * 配置hive-env.sh文件
-复制hive-env.sh.template，修改hive-env.sh文件
+复制hive-env.sh.template，修改hive-env.sh文件  
 ```
 HADOOP_HOME=/home/jack/hadoop2
 export HIVE_CONF_DIR=/home/jack/app/hive-2.0.0/conf
@@ -264,8 +264,8 @@ export HIVE_AUX_JARS_PATH=/home/jack/app/hive-2.0.0/lib
 ```
 
 * 配置hive-site.xml文件
-cp hive-default.xml.template hive-site.xml
-添加如下内容
+cp hive-default.xml.template hive-site.xml  
+添加如下内容  
 ```
   <property>
    <name>hive.metastore.local</name>
@@ -316,14 +316,14 @@ cp hive-default.xml.template hive-site.xml
   </property>
 ```
 
-* 建立存储目录：
-$ hadoop fs -mkdir -p  /user/hive/tmp
-$ hadoop fs -mkdir -p /user/hive/log
-$ hadoop fs -mkdir -p /user/hive/warehouse
-$ hadoop fs -chmod g+w   /user/hive/tmp
+* 建立存储目录：  
+$ hadoop fs -mkdir -p  /user/hive/tmp  
+$ hadoop fs -mkdir -p /user/hive/log  
+$ hadoop fs -mkdir -p /user/hive/warehouse  
+$ hadoop fs -chmod g+w   /user/hive/tmp  
 
-$ hadoop fs -chmod g+w   /user/hive/log
-$ hadoop fs -chmod g+w   /user/hive/warehouse    /usr/hive/tmp
+$ hadoop fs -chmod g+w   /user/hive/log  
+$ hadoop fs -chmod g+w   /user/hive/warehouse    /usr/hive/tmp  
 
 * 配置 hive-log4j.proprties
 ```
@@ -332,11 +332,11 @@ property.hive.log.file = hive.log
 ```
 
 * 初始化数据库
-$ schematool -initSchema -dbType mysql -userName=hive -passWord=hive
+$ schematool -initSchema -dbType mysql -userName=hive -passWord=hive  
 
 * 查看mysql
-systemctl status mysql //mysql运行中
-确认mysql的mysql-connector-java-xxx-bin.jar 包放到 hive-2.0.0/lib目录下
+systemctl status mysql //mysql运行中  
+确认mysql的mysql-connector-java-xxx-bin.jar 包放到 hive-2.0.0/lib目录下  
 
 * 启动metastore
  hive --service metastore > /tmp/hive_metastore.log 2>&1 &
@@ -348,21 +348,21 @@ $sbin/start-yarn.sh
 * 启动hive
 $hive
 
-* 处理报错：
-===> ${system:java.io.tmpdir%7D/$%7Bhive.session.id%7D_resources 
-原因：hive-site.xml 中的目录没有配置
-解决办法： 
-在主机某目录下新建一个文件夹 例如 /home/hive/tmpdir 
-编辑$HIVE_HOME/conf/hive-site.xml文件找到含有那一串字符的地方替换成刚才建立的目录就行了。
+* 处理报错：  
+===> ${system:java.io.tmpdir%7D/$%7Bhive.session.id%7D_resources   
+原因：hive-site.xml 中的目录没有配置  
+解决办法：   
+在主机某目录下新建一个文件夹 例如 /home/hive/tmpdir   
+编辑$HIVE_HOME/conf/hive-site.xml文件找到含有那一串字符的地方替换成刚才建立的目录就行了。  
 
-* 验证hive
-create table test(id int, name string) row format delimited FIELDS TERMINATED BY ',';
+* 验证hive  
+create table test(id int, name string) row format delimited FIELDS TERMINATED BY ',';  
 
-mysql -u hive -p
-mysql> select* from TBLS;
+mysql -u hive -p  
+mysql> select* from TBLS;  
 
-Hadoop中查看生成的文件：
+Hadoop中查看生成的文件：  
 
-$ hdfs dfs -ls /user/hive/warehouse/
-Found 1 items
-drwxrwxrwx   -  supergroup          0 2016-04-24 11:53 /user/hive/warehouse/test
+$ hdfs dfs -ls /user/hive/warehouse/  
+Found 1 items  
+drwxrwxrwx   -  supergroup          0 2016-04-24 11:53 /user/hive/warehouse/test  
