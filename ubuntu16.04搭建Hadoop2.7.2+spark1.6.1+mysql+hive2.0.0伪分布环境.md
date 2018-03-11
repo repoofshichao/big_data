@@ -1,6 +1,6 @@
 ## ubuntu16.04搭建Hadoop2.7.2+spark1.6.1+mysql+hive2.0.0伪分布环境
-[toc]
-### 准备
+
+* 准备
 hadoop: https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/
 hive:  http://archive.apache.org/dist/hive/hive-2.0.0/
 spark: https://archive.apache.org/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz
@@ -8,7 +8,7 @@ scala: https://downloads.lightbend.com/scala/2.10.6/scala-2.10.6.tgz
 
 ## hadoop 安装
 
-### 配置环境变量
+* 配置环境变量
 ```
 export JAVA_HOME=/usr/local/jdk1.8.0_161
 export JRE_HOME=${JAVA_HOME}/jre
@@ -37,17 +37,17 @@ export CLASSPATH=$CLASSPATH.:{HIVE_HOME}/lib
 export PATH=/home/jack/hadoop2/bin:/home/jack/hadoop2/sbin:$JAVA_HOME/:$HADOOP_PREFIX/bin:$PATH
 ```
 
-### 安装rsync
+* 安装rsync
 sudo apt-get install rsync
 
-### ssh
+* ssh
 sudo apt-get install openssh-server
 cd ~/.ssh/   # 若没有该目录，请先执行一次ssh localhost
 ssh-keygen -t rsa   # 会有提示，都按回车就可以
 cat id_rsa.pub >> authorized_keys  # 加入授权
 使用ssh localhost试试能否直接登录
 
-### /etc/hosts
+* /etc/hosts
 ```
 127.0.0.1	localhost
 127.0.1.1	jack-vm
@@ -60,12 +60,12 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ```
 
-### 修改配置文件：etc/hadoop/hadoop-env.sh
+* 修改配置文件：etc/hadoop/hadoop-env.sh
 ```
 export JAVA_HOME=/usr/local/jdk1.8.0_161
 ```
 
-### 修改文件etc/hadoop/core-site.xml
+* 修改文件etc/hadoop/core-site.xml
 ```
 <configuration>
     <property>
@@ -92,7 +92,7 @@ export JAVA_HOME=/usr/local/jdk1.8.0_161
 </configuration>
 ```
 
-### 修改etc/hadoop/hdfs-site.xml:
+* 修改etc/hadoop/hdfs-site.xml:
 ```
 <configuration>
     <property>
@@ -115,7 +115,7 @@ export JAVA_HOME=/usr/local/jdk1.8.0_161
 </configuration>
 ```
 
-### 修改配置文件mapred-site.xml
+* 修改配置文件mapred-site.xml
 ```
 <configuration>
     <property>
@@ -133,7 +133,7 @@ export JAVA_HOME=/usr/local/jdk1.8.0_161
 </configuration>
 ```
 
-### 修改配置文件yarn-site.xml
+* 修改配置文件yarn-site.xml
 ```
 <configuration>
 
@@ -171,7 +171,7 @@ export JAVA_HOME=/usr/local/jdk1.8.0_161
 </configuration>
 ```
 
-### 启动
+* 启动
 ```
 source .bashrc 
 start-dfs.sh
@@ -205,15 +205,15 @@ jps
 15937 Jps
 15501 ResourceManager
 
-### 验证：
+* 验证：
 yarn：http://localhost:8088/
 hadoop:  http://localhost:50070
 
 ## spark安装
-### 配置Spark环境变量
+* 配置Spark环境变量
 上面已经配置过。
 
-### 配置spark-env.sh
+* 配置spark-env.sh
 将spark-env.sh.template复制为spark-env.sh 
 增加如下内容：
 ```
@@ -228,11 +228,11 @@ export SPARK_WORKER_CORES=1
 export HADOOP_CONF_DIR=/home/jack/hadoop2/etc/hadoop
 ```
 
-### 测试
+* 测试
 pyspark
 
 ## Hive2.0.0安装
-### mysql安装
+* mysql安装
 $sudo apt-get install mysql-server
 登录mysql：$mysql -u root -p
 建立数据库hive：mysql>create database hive;
@@ -252,9 +252,9 @@ mysql>alter database hive character set latin1;
 下载mysql-connector-java-xxx.tar.gz ，复制msyql的JDBC驱动包到Hive的lib目录下。
 
 ## Hive安装
-### 环境配置
+* 环境配置
 见.bashrc
-### 配置hive-env.sh文件
+* 配置hive-env.sh文件
 复制hive-env.sh.template，修改hive-env.sh文件
 ```
 HADOOP_HOME=/home/jack/hadoop2
@@ -262,7 +262,7 @@ export HIVE_CONF_DIR=/home/jack/app/hive-2.0.0/conf
 export HIVE_AUX_JARS_PATH=/home/jack/app/hive-2.0.0/lib
 ```
 
-### 配置hive-site.xml文件
+* 配置hive-site.xml文件
 cp hive-default.xml.template hive-site.xml
 添加如下内容
 ```
@@ -315,7 +315,7 @@ cp hive-default.xml.template hive-site.xml
   </property>
 ```
 
-### 建立存储目录：
+* 建立存储目录：
 $ hadoop fs -mkdir -p  /user/hive/tmp
 $ hadoop fs -mkdir -p /user/hive/log
 $ hadoop fs -mkdir -p /user/hive/warehouse
@@ -324,37 +324,37 @@ $ hadoop fs -chmod g+w   /user/hive/tmp
 $ hadoop fs -chmod g+w   /user/hive/log
 $ hadoop fs -chmod g+w   /user/hive/warehouse    /usr/hive/tmp
 
-### 配置 hive-log4j.proprties
+* 配置 hive-log4j.proprties
 ```
 property.hive.log.dir = /home/jack/app/hive-2.0.0/log
 property.hive.log.file = hive.log
 ```
 
-### 初始化数据库
+* 初始化数据库
 $ schematool -initSchema -dbType mysql -userName=hive -passWord=hive
 
-### 查看mysql
+* 查看mysql
 systemctl status mysql //mysql运行中
 确认mysql的mysql-connector-java-xxx-bin.jar 包放到 hive-2.0.0/lib目录下
 
-### 启动metastore
+* 启动metastore
  hive --service metastore > /tmp/hive_metastore.log 2>&1 &
  
-### 启动Hadoop服务：
+* 启动Hadoop服务：
 $sbin/start-dfs.sh
 $sbin/start-yarn.sh
 
-### 启动hive
+* 启动hive
 $hive
 
-### 处理报错：
+* 处理报错：
 ===> ${system:java.io.tmpdir%7D/$%7Bhive.session.id%7D_resources 
 原因：hive-site.xml 中的目录没有配置
 解决办法： 
 在主机某目录下新建一个文件夹 例如 /home/hive/tmpdir 
 编辑$HIVE_HOME/conf/hive-site.xml文件找到含有那一串字符的地方替换成刚才建立的目录就行了。
 
-### 验证hive
+* 验证hive
 create table test(id int, name string) row format delimited FIELDS TERMINATED BY ',';
 
 mysql -u hive -p
